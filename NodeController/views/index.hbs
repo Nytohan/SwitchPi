@@ -1,0 +1,76 @@
+
+<div id='controller'>
+
+  <div id='shoulders'>
+    <div style='float:left'>
+      <div class='button control' id='L'>L</div><br>
+      <div class='button control' id='ZL'>ZL</div><br>
+
+    </div>
+    <div>
+      <div class='button control' id='R'>R</div><br>
+      <div class='button control' id='ZR'>ZR</div><br>
+
+    </div>
+  </div><br>
+  <div class="d-pad" style='float:left'>
+    <a class="control up" id="UP" href="#"></a>
+    <a class="control right" id="RIGHT" href="#"></a>
+    <a class="control down" id="DOWN" href="#"></a>
+    <a class="control left" id="LEFT" href="#"></a>
+  </div>
+  <div id='controls' style='float:left; text-'>
+    <div class='button control' id='BACK'>-</div>
+    <div class='button control' id='HOME'>⌂</div>
+    <div class='button control' id='START'>+</div>
+    <div class='button control' id='WAKE'>WAKE</div><br><br>
+    <div class='button control' id='L3'>L3</div>
+    <div class='button control' id='R3'>R3</div>
+  </div>
+  <div class="o-pad" style='float:left'>
+      <a class="control x" id='X' href="#">X</a>
+      <a class="control a" id='A' href="#">A</a>
+      <a class="control b" id='B' href="#">B</a>
+      <a class="control y" id='Y' href="#">Y</a>
+  </div>
+  <br style='clear: both'>
+  <br>
+
+  <div id='controls'>
+    <div class='button function' id='CENTER_STICKS'>Center Sticks</div>
+
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+  $(document).ready(function(){
+      const socket = io.connect('http://192.168.1.10/');
+
+      socket.on('connection', function(message) {
+    	  console.log("Connected");
+      });
+
+      held = [];
+
+      $(document).on('mousedown', '.control', function(e){
+        console.log(e.target.id)
+        socket.emit("HOLD",e.target.id)
+        held.push(e.target.id)
+      })
+
+      $(document).on('mouseup', function(e){
+        while(held.length){
+          socket.emit("RELEASE", held.pop())
+        }
+      })
+
+      $(document).on('click', '.function', function(e){
+          socket.emit("FUNCTION",e.target.id)
+      })
+
+
+    })
+</script>

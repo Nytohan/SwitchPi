@@ -1,0 +1,7 @@
+.sensor {
+  float:left;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+table.plain tbody tr:nth-child(2n + 1) {
+  background-color: inherit; }
